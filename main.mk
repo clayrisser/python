@@ -3,7 +3,7 @@
 # File Created: 10-02-2022 10:21:38
 # Author: Clay Risser
 # -----
-# Last Modified: 10-02-2022 12:53:52
+# Last Modified: 24-05-2022 13:23:25
 # Modified By: Clay Risser
 # -----
 # Risser Labs (c) Copyright 2022
@@ -43,11 +43,11 @@ env:
 	@$(VIRTUALENV) env $@
 
 define poetry_install
-$(POETRY) export $2 -o requirements.txt && \
+$(POETRY) export $1 -o requirements.txt && \
 	$(PIP) install -r requirements.txt
 endef
 define poetry_install_dev
-$(call poetry_install,--dev $2)
+$(call poetry_install,--dev $1)
 endef
 
 define black_lint
