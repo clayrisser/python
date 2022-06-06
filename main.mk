@@ -3,7 +3,7 @@
 # File Created: 10-02-2022 10:21:38
 # Author: Clay Risser
 # -----
-# Last Modified: 24-05-2022 13:23:25
+# Last Modified: 06-06-2022 11:11:17
 # Modified By: Clay Risser
 # -----
 # Risser Labs (c) Copyright 2022
@@ -20,11 +20,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-export PYENV ?= env
-export PIP ?= $(PYENV)/bin/pip
-export BLACK ?= $(PYENV)/bin/black
+export PIP ?= env/bin/pip
+export BLACK ?= env/bin/black
 export POETRY ?= poetry
-export PYTHON ?= $(PYENV)/bin/python
+export PYTHON ?= env/bin/python
 export VIRTUALENV ?= $(call ternary,python3 --version,python3 -m venv,python -m venv)
 
 .PHONY: python
@@ -43,8 +42,12 @@ env:
 	@$(VIRTUALENV) env $@
 
 define poetry_install
+if [ pyproject.toml -nt poetry.lock ]; then \
+	$(POETRY) lock --no-update; \
+fi && \
+$(RM) requirements.txt && \
 $(POETRY) export $1 -o requirements.txt && \
-	$(PIP) install -r requirements.txt
+$(PIP) install -r requirements.txt
 endef
 define poetry_install_dev
 $(call poetry_install,--dev $1)

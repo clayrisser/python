@@ -3,7 +3,7 @@
 # File Created: 10-02-2022 10:21:38
 # Author: Clay Risser
 # -----
-# Last Modified: 24-05-2022 13:23:45
+# Last Modified: 06-06-2022 11:11:34
 # Modified By: Clay Risser
 # -----
 # Risser Labs (c) Copyright 2022
@@ -22,7 +22,7 @@
 
 MKPM_PKG_NAME := python
 
-MKPM_PKG_VERSION := 0.0.2
+MKPM_PKG_VERSION := 0.0.3
 
 MKPM_PKG_DESCRIPTION := "manage python projects"
 
