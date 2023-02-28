@@ -3,7 +3,7 @@
 # File Created: 10-02-2022 10:21:38
 # Author: Clay Risser
 # -----
-# Last Modified: 06-06-2022 11:11:17
+# Last Modified: 28-02-2023 08:30:04
 # Modified By: Clay Risser
 # -----
 # Risser Labs (c) Copyright 2022
@@ -45,12 +45,12 @@ define poetry_install
 if [ pyproject.toml -nt poetry.lock ]; then \
 	$(POETRY) lock --no-update; \
 fi && \
-$(RM) requirements.txt && \
+($(RM) requirements.txt 2>$(NULL) || $(TRUE)) && \
 $(POETRY) export $1 -o requirements.txt && \
 $(PIP) install -r requirements.txt
 endef
 define poetry_install_dev
-$(call poetry_install,--dev $1)
+$(call poetry_install,--with dev $1)
 endef
 
 define black_lint
