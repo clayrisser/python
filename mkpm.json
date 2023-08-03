@@ -1,0 +1,16 @@
+{
+  "name": "python",
+  "version": "0.0.5",
+  "description": "manage python projects",
+  "author": "Clay Risser <clayrisser@gmail.com>",
+  "repo": "git@gitlab.com:bitspur/mkpm/packages.git",
+  "source": "https://gitlab.com/bitspur/mkpm/python.git",
+  "packages": {
+    "default": {
+      "gnu": "0.1.0"
+    }
+  },
+  "repos": {
+    "default": "https://gitlab.com/bitspur/mkpm/packages.git"
+  }
+}
