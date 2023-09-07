@@ -3,7 +3,7 @@
 # File Created: 10-02-2022 10:21:38
 # Author: Clay Risser
 # -----
-# Last Modified: 28-02-2023 08:30:04
+# Last Modified: 07-09-2023 06:21:43
 # Modified By: Clay Risser
 # -----
 # Risser Labs (c) Copyright 2022
@@ -20,26 +20,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-export PIP ?= env/bin/pip
-export BLACK ?= env/bin/black
+export PIP ?= $(PROJECT_ROOT)/env/bin/pip3
+export BLACK ?= $(PROJECT_ROOT)/env/bin/black
 export POETRY ?= poetry
-export PYTHON ?= env/bin/python
-export VIRTUALENV ?= $(call ternary,python3 --version,python3 -m venv,python -m venv)
+export PYTHON ?= $(PROJECT_ROOT)/env/bin/python3
+
+VENV := $(PROJECT_ROOT)/env/bin/python
+.PHONY: venv
+venv: $(VENV) ## create virtual environment
+$(VENV):
+	@python3 -m venv env
 
 .PHONY: python
-python: ## run python
-	@$(PYTHON) $(ARGS)
-
-.PHONY: repl
-repl: ## run python repl shell
-	@$(PYTHON)
+python: $(VENV) ## run python
+	@$(PYTHON) $(PYTHON_ARGS)
 
 .PHONY: pip
-pip: ## run python repl shell
-	@$(PIP) $(ARGS)
-
-env:
-	@$(VIRTUALENV) env $@
+pip: $(VENV) ## run pip
+	@$(PIP) $(PIP_ARGS)
 
 define poetry_install
 if [ pyproject.toml -nt poetry.lock ]; then \
@@ -61,5 +59,4 @@ CACHE_ENVS += \
 	PIP \
 	POETRY \
 	PYENV \
-	PYTHON \
-	VIRTUALENV
+	PYTHON
