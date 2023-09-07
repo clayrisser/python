@@ -3,7 +3,7 @@
 # File Created: 10-02-2022 10:21:38
 # Author: Clay Risser
 # -----
-# Last Modified: 07-09-2023 06:21:43
+# Last Modified: 07-09-2023 07:31:54
 # Modified By: Clay Risser
 # -----
 # Risser Labs (c) Copyright 2022
@@ -20,16 +20,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-export PIP ?= $(PROJECT_ROOT)/env/bin/pip3
-export BLACK ?= $(PROJECT_ROOT)/env/bin/black
+VENV ?= $(PROJECT_ROOT)/env
+export BLACK ?= $(VENV)/bin/black
+export PIP ?= $(VENV)/bin/pip3
 export POETRY ?= poetry
-export PYTHON ?= $(PROJECT_ROOT)/env/bin/python3
+export PYTHON ?= $(VENV)/bin/python3
 
-VENV := $(PROJECT_ROOT)/env/bin/python
 .PHONY: venv
-venv: $(VENV) ## create virtual environment
-$(VENV):
-	@python3 -m venv env
+venv: $(VENV)/bin/python ## create virtual environment
+$(VENV)/bin/python:
+	@python3 -m venv $(VENV)
 
 .PHONY: python
 python: $(VENV) ## run python
