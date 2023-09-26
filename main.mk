@@ -3,10 +3,10 @@
 # File Created: 10-02-2022 10:21:38
 # Author: Clay Risser
 # -----
-# Last Modified: 07-09-2023 07:31:54
+# Last Modified: 26-09-2023 11:12:57
 # Modified By: Clay Risser
 # -----
-# Risser Labs (c) Copyright 2022
+# BitSpur (c) Copyright 2022
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ define poetry_install_dev
 $(call poetry_install,--with dev $1)
 endef
 
-define black_lint
+define black_format
 $(BLACK) $2 $1
 endef
 

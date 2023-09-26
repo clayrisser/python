@@ -13,8 +13,8 @@
   "psi-header.variables": [["projectCreationYear", "2022"]],
   "psi-header.config": {
     "blankLinesAfter": 1,
-    "company": "Risser Labs",
-    "copyrightHolder": "Risser Labs",
+    "company": "BitSpur",
+    "copyrightHolder": "BitSpur",
     "creationDateZero": "asIs",
     "forceToTop": true,
     "initials": "CR",
