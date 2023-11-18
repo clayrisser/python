@@ -1,12 +1,12 @@
-# File: /Mkpmfile
-# Project: mkpm-python
-# File Created: 10-02-2022 10:21:38
+# File: /Makefile
+# Project: python
+# File Created: 17-11-2023 21:13:10
 # Author: Clay Risser
 # -----
-# Last Modified: 17-11-2023 21:08:12
+# Last Modified: 17-11-2023 21:13:16
 # Modified By: Clay Risser
 # -----
-# BitSpur (c) Copyright 2022
+# BitSpur (c) Copyright 2022 - 2023
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,26 +20,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include $(MKPM)/mkpm
-include $(MKPM)/gnu
-include main.mk
+.ONESHELL:
+.POSIX:
+.SILENT:
 
-PACK_DIR := $(MKPM_TMP)/pack
-
-.PHONY: deps
-deps: venv
-	@$(POETRY) install --no-root $(DEPS_ARGS)
-
-.PHONY: info
-info:
-	@$(ENV)
-
-.PHONY: clean
-clean:
-	@$(MKCHAIN_CLEAN)
-	@$(GIT) clean -fXd \
-		$(MKPM_GIT_CLEAN_FLAGS)
-
-.PHONY: purge
-purge: clean
-	@$(GIT) clean -fXd
+MKPM := ./mkpm
+.PHONY: %
+%:
+	@$(MKPM) "$@" $(ARGS)

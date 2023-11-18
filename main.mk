@@ -1,12 +1,12 @@
 # File: /main.mk
-# Project: mkpm-python
-# File Created: 10-02-2022 10:21:38
+# Project: python
+# File Created: 17-11-2023 20:57:39
 # Author: Clay Risser
 # -----
-# Last Modified: 26-09-2023 11:12:57
+# Last Modified: 17-11-2023 21:08:38
 # Modified By: Clay Risser
 # -----
-# BitSpur (c) Copyright 2022
+# BitSpur (c) Copyright 2022 - 2023
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,32 +20,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+PYENV ?= pyenv
 VENV ?= $(PROJECT_ROOT)/env
-export BLACK ?= $(VENV)/bin/black
-export PIP ?= $(VENV)/bin/pip3
-export POETRY ?= poetry
-export PYTHON ?= $(VENV)/bin/python3
+PYTHON ?= $(VENV)/bin/python3
+PIP ?= $(VENV)/bin/pip3
+ifeq ($(VENV)/bin/python3,$(PYTHON))
+ACTIVATE := . $(VENV)/bin/activate &&
+endif
+POETRY ?= $(ACTIVATE) poetry
+BLACK ?= $(VENV)/bin/black
 
 .PHONY: venv
-venv: $(VENV)/bin/python ## create virtual environment
-$(VENV)/bin/python:
-	@python3 -m venv $(VENV)
+venv: $(PYTHON)
+$(PYTHON):
+	@$(WHICH) $(PYTHON) $(NOOUT) || python3 -m venv $(VENV)
 
 .PHONY: python
-python: $(VENV) ## run python
+python: $(VENV)
 	@$(PYTHON) $(PYTHON_ARGS)
 
 .PHONY: pip
-pip: $(VENV) ## run pip
+pip: $(VENV)
 	@$(PIP) $(PIP_ARGS)
 
 define poetry_install
 if [ pyproject.toml -nt poetry.lock ]; then \
-	$(POETRY) lock --no-update; \
+	$(POETRY) lock; \
 fi && \
-($(RM) requirements.txt 2>$(NULL) || $(TRUE)) && \
-$(POETRY) export $1 -o requirements.txt && \
-$(PIP) install -r requirements.txt
+$(POETRY) install --no-root $1
 endef
 define poetry_install_dev
 $(call poetry_install,--with dev $1)
@@ -56,6 +58,7 @@ $(BLACK) $2 $1
 endef
 
 CACHE_ENVS += \
+	BLACK \
 	PIP \
 	POETRY \
 	PYENV \
