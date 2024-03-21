@@ -3,7 +3,7 @@
 # File Created: 17-11-2023 21:13:10
 # Author: Clay Risser
 # -----
-# Last Modified: 17-11-2023 21:13:16
+# Last Modified: 21-03-2024 14:44:05
 # Modified By: Clay Risser
 # -----
 # BitSpur (c) Copyright 2022 - 2023
@@ -23,8 +23,11 @@
 .ONESHELL:
 .POSIX:
 .SILENT:
-
+.DEFAULT_GOAL := default
 MKPM := ./mkpm
+.PHONY: default
+default:
+	@$(MKPM) $(ARGS)
 .PHONY: %
 %:
 	@$(MKPM) "$@" $(ARGS)
