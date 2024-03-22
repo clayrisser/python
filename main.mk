@@ -1,12 +1,12 @@
 # File: /main.mk
 # Project: python
-# File Created: 17-11-2023 20:57:39
+# File Created: 22-03-2024 12:57:54
 # Author: Clay Risser
 # -----
-# Last Modified: 22-03-2024 12:58:43
+# Last Modified: 22-03-2024 14:10:13
 # Modified By: Clay Risser
 # -----
-# BitSpur (c) Copyright 2022 - 2023
+# BitSpur (c) Copyright 2022 - 2024
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,6 +41,9 @@ $(PYTHON): $(PROJECT_ROOT)/.tool-versions
 else
 $(PYTHON):
 endif
+	@if [ "$(PROJECT_ROOT)/.tool-versions" -nt "$(PYTHON)" ]; then \
+		$(RM) -rf $(VENV); \
+	fi
 ifneq (,$(PYTHON_VERSION))
 	@export _GLOBAL_PYTHON_VERSION="$$(python3 --version | cut -d' ' -f2)"; \
 		if [ "$$_GLOBAL_PYTHON_VERSION" != "$(PYTHON_VERSION)" ]; then \
@@ -48,9 +51,6 @@ ifneq (,$(PYTHON_VERSION))
 			exit 1; \
 		fi
 endif
-	@if [ "$(PROJECT_ROOT)/.tool-versions" -nt "$(PYTHON)" ]; then \
-		$(RM) -rf $(VENV); \
-	fi
 	@$(WHICH) $(PYTHON) $(NOOUT) || python3 -m venv $(VENV)
 	@$(TOUCH) -m $(PYTHON)
 
