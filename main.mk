@@ -3,7 +3,7 @@
 # File Created: 17-11-2023 20:57:39
 # Author: Clay Risser
 # -----
-# Last Modified: 21-03-2024 17:24:49
+# Last Modified: 22-03-2024 12:58:43
 # Modified By: Clay Risser
 # -----
 # BitSpur (c) Copyright 2022 - 2023
@@ -82,14 +82,3 @@ CACHE_ENVS += \
 	POETRY \
 	PYENV \
 	PYTHON
-
-$(MKPM_TMP)/system_package_install_asdf:
-ifeq (darwin,$(PLATFORM))
-	@$(call system_package_install,brew install asdf,asdf)
-else
-	@$(call system_package_install,git clone https://github.com/asdf-vm/asdf.git $(HOME)/.asdf --branch v0.14.0,asdf)
-endif
-	@$(TOUCH) $@
-ifneq (1,$(shell $(WHICH) $(HOME)/.asdf/bin/asdf $(NOOUT) && $(ECHO) 1))
-include $(MKPM_TMP)/system_package_install_asdf
-endif
