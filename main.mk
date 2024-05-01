@@ -3,7 +3,7 @@
 # File Created: 17-11-2023 20:57:39
 # Author: Clay Risser
 # -----
-# Last Modified: 21-03-2024 17:24:49
+# Last Modified: 01-05-2024 11:38:07
 # Modified By: Clay Risser
 # -----
 # BitSpur (c) Copyright 2022 - 2023
@@ -66,7 +66,8 @@ define poetry_install
 if [ pyproject.toml -nt poetry.lock ]; then \
 	$(POETRY) lock; \
 fi && \
-$(POETRY) install --no-root $1
+$(POETRY) export $1 > $(PROJECT_ROOT)/requirements.txt && \
+$(PIP) install -r $(PROJECT_ROOT)/requirements.txt
 endef
 define poetry_install_dev
 $(call poetry_install,--with dev $1)
