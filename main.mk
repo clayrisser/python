@@ -1,12 +1,12 @@
 # File: /main.mk
 # Project: python
-# File Created: 17-11-2023 20:57:39
+# File Created: 22-03-2024 12:57:54
 # Author: Clay Risser
 # -----
-# Last Modified: 01-05-2024 11:38:07
+# Last Modified: 01-05-2024 11:39:11
 # Modified By: Clay Risser
 # -----
-# BitSpur (c) Copyright 2022 - 2023
+# BitSpur (c) Copyright 2022 - 2024
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,6 +41,9 @@ $(PYTHON): $(PROJECT_ROOT)/.tool-versions
 else
 $(PYTHON):
 endif
+	@if [ "$(PROJECT_ROOT)/.tool-versions" -nt "$(PYTHON)" ]; then \
+		$(RM) -rf $(VENV); \
+	fi
 ifneq (,$(PYTHON_VERSION))
 	@export _GLOBAL_PYTHON_VERSION="$$(python3 --version | cut -d' ' -f2)"; \
 		if [ "$$_GLOBAL_PYTHON_VERSION" != "$(PYTHON_VERSION)" ]; then \
@@ -48,9 +51,6 @@ ifneq (,$(PYTHON_VERSION))
 			exit 1; \
 		fi
 endif
-	@if [ "$(PROJECT_ROOT)/.tool-versions" -nt "$(PYTHON)" ]; then \
-		$(RM) -rf $(VENV); \
-	fi
 	@$(WHICH) $(PYTHON) $(NOOUT) || python3 -m venv $(VENV)
 	@$(TOUCH) -m $(PYTHON)
 
@@ -83,14 +83,3 @@ CACHE_ENVS += \
 	POETRY \
 	PYENV \
 	PYTHON
-
-$(MKPM_TMP)/system_package_install_asdf:
-ifeq (darwin,$(PLATFORM))
-	@$(call system_package_install,brew install asdf,asdf)
-else
-	@$(call system_package_install,git clone https://github.com/asdf-vm/asdf.git $(HOME)/.asdf --branch v0.14.0,asdf)
-endif
-	@$(TOUCH) $@
-ifneq (1,$(shell $(WHICH) $(HOME)/.asdf/bin/asdf $(NOOUT) && $(ECHO) 1))
-include $(MKPM_TMP)/system_package_install_asdf
-endif
